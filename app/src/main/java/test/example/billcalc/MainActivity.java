@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try{
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            //startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            startActivity(takePictureIntent);
         } catch(ActivityNotFoundException e){
             Toast toast_error_camera = Toast.makeText(getApplicationContext(), "Error in opening camera", Toast.LENGTH_SHORT);
             toast_error_camera.show();
