@@ -16,6 +16,7 @@ import java.util.Date;
 import android.os.Environment;
 import androidx.core.content.FileProvider;
 import android.net.Uri;
+import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try{
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            //startActivity(takePictureIntent);
         } catch(ActivityNotFoundException e){
             Toast toast_error_camera = Toast.makeText(getApplicationContext(), "Error in opening camera", Toast.LENGTH_SHORT);
             toast_error_camera.show();
@@ -51,11 +51,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
-            //Bundle extras = data.getExtras();
+            Bundle extras = data.getExtras();
             //Bitmap imageBitmap = (Bitmap) extras.get("data");
             Toast toast_image_taken = Toast.makeText(getApplicationContext(), "Taken the image", Toast.LENGTH_SHORT);
             toast_image_taken.show();
             // call image view and set the bit map
+        } else {
+            Toast toast_failed_camera_return = Toast.makeText(getApplicationContext(), "Failed Camera Return", Toast.LENGTH_SHORT);
+            toast_failed_camera_return.show();
         }
     }
 

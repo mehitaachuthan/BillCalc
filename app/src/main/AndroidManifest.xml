@@ -5,9 +5,6 @@
                   android:required="false" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <paths xmlns:android="http://schemas.android.com/apk/res/android">
-        <external-files-path android:name="my_images" android:path="Pictures" />
-    </paths>
 
 
     <application
