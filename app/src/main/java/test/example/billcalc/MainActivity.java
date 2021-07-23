@@ -17,6 +17,11 @@ import android.os.Environment;
 import androidx.core.content.FileProvider;
 import android.net.Uri;
 import android.util.Log;
+import java.io.Serializable;
+import java.util.Set;
+import java.util.Iterator;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,7 +57,19 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             Bundle extras = data.getExtras();
-            //Bitmap imageBitmap = (Bitmap) extras.get("data");
+            // iterate through the bundle and get the key values
+            Set<String> keys = extras.keySet();
+            Iterator<String> pointer = keys.iterator();
+            while(pointer.hasNext()){
+                String key_name = pointer.next();
+                Log.i("Keys:", key_name);
+                Log.i("Keys", extras.get(key_name).toString());
+            }
+            Bitmap imageBitmap = (Bitmap)(extras.get("data"));
+            ImageView camera_img = findViewById(R.id.camera_image);
+            camera_img.setImageBitmap(imageBitmap);
+            TextView img_text = findViewById(R.id.image_text);
+            img_text.setText("PHOTO SHOWS UP!!!!!!!");
             Toast toast_image_taken = Toast.makeText(getApplicationContext(), "Taken the image", Toast.LENGTH_SHORT);
             toast_image_taken.show();
             // call image view and set the bit map

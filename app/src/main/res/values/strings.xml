@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BillCalc</string>
+    <string name="photo_placeholder">Photo</string>
 </resources>
