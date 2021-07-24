@@ -1,5 +1,6 @@
 package test.example.billcalc;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.ActivityNotFoundException;
@@ -22,6 +23,15 @@ import java.util.Set;
 import java.util.Iterator;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.text.TextRecognizerOptions;
+import com.google.mlkit.vision.text.TextRecognition;
+import com.google.mlkit.vision.text.TextRecognizer;
+import com.google.mlkit.vision.text.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -65,14 +75,30 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("Keys:", key_name);
                 Log.i("Keys", extras.get(key_name).toString());
             }
+            // get bitmap image from the bundle data and display in image view on screen
             Bitmap imageBitmap = (Bitmap)(extras.get("data"));
             ImageView camera_img = findViewById(R.id.camera_image);
             camera_img.setImageBitmap(imageBitmap);
-            TextView img_text = findViewById(R.id.image_text);
-            img_text.setText("PHOTO SHOWS UP!!!!!!!");
+            InputImage input_img = InputImage.fromBitmap(imageBitmap, 0);
+            // build text recognizer
+            TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+            Task<Text> result = recognizer.process(input_img).addOnSuccessListener(new OnSuccessListener<Text>(){
+                @Override
+                public void onSuccess(Text visionText){
+                    // display the text
+                    String text_in_img = visionText.getText();
+                    TextView img_text = findViewById(R.id.image_text);
+                    img_text.setText(text_in_img);
+                }
+            }).addOnFailureListener(new OnFailureListener(){
+                @Override
+                public void onFailure(@NonNull Exception e){
+                    Toast failed_text_recognition = Toast.makeText(getApplicationContext(), "Could Not Read Text", Toast.LENGTH_SHORT);
+                    failed_text_recognition.show();
+                }
+            });
             Toast toast_image_taken = Toast.makeText(getApplicationContext(), "Taken the image", Toast.LENGTH_SHORT);
             toast_image_taken.show();
-            // call image view and set the bit map
         } else {
             Toast toast_failed_camera_return = Toast.makeText(getApplicationContext(), "Failed Camera Return", Toast.LENGTH_SHORT);
             toast_failed_camera_return.show();
